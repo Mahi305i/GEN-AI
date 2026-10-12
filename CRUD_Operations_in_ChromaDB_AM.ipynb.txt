@@ -1,0 +1,409 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "source": [
+        "CRUD_Operations_in_ChromaDB"
+      ],
+      "metadata": {
+        "id": "at4ad0658pTk"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "RXUgGI1N7qCr",
+        "outputId": "a68444e3-126a-4eac-cf39-a6d350e59ff1"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m52.0/52.0 kB\u001b[0m \u001b[31m2.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m23.3/23.3 MB\u001b[0m \u001b[31m85.3 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m278.2/278.2 kB\u001b[0m \u001b[31m19.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m4.6/4.6 MB\u001b[0m \u001b[31m97.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m23.6/23.6 MB\u001b[0m \u001b[31m84.4 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m72.5/72.5 kB\u001b[0m \u001b[31m3.7 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m140.1/140.1 kB\u001b[0m \u001b[31m7.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m60.0/60.0 kB\u001b[0m \u001b[31m3.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m206.3/206.3 kB\u001b[0m \u001b[31m12.8 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m95.7/95.7 kB\u001b[0m \u001b[31m6.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m69.4/69.4 kB\u001b[0m \u001b[31m4.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m60.6/60.6 kB\u001b[0m \u001b[31m3.9 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h\u001b[31mERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n",
+            "google-adk 2.7.1 requires opentelemetry-api<=1.42.1,>=1.39, but you have opentelemetry-api 1.45.0 which is incompatible.\n",
+            "google-adk 2.7.1 requires opentelemetry-sdk<=1.42.1,>=1.39, but you have opentelemetry-sdk 1.45.0 which is incompatible.\u001b[0m\u001b[31m\n",
+            "\u001b[0m"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install -q chromadb"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import chromadb\n",
+        "\n",
+        "# In-memory client (resets when runtime restarts) - great for learning\n",
+        "client = chromadb.Client()\n",
+        "\n",
+        "# Create a fresh collection to practice CRUD operations on\n",
+        "collection = client.create_collection(name=\"crud_demo\")\n",
+        "\n",
+        "print(\"Collection created:\", collection.name)\n",
+        "print(\"Current document count:\", collection.count())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xJaxdo0d7620",
+        "outputId": "ded54f82-0322-4a93-9853-4ecbfeeee820"
+      },
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collection created: crud_demo\n",
+            "Current document count: 0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "collection.add(\n",
+        "    documents=[\n",
+        "        \"Python is a popular programming language for AI.\",\n",
+        "        \"The weather today is sunny and warm.\",\n",
+        "        \"Machine learning models learn patterns from data.\",\n",
+        "        \"I enjoy playing football on weekends.\",\n",
+        "        \"Deep learning uses neural networks with many layers.\"\n",
+        "    ],\n",
+        "    metadatas=[\n",
+        "        {\"category\": \"tech\"},\n",
+        "        {\"category\": \"weather\"},\n",
+        "        {\"category\": \"tech\"},\n",
+        "        {\"category\": \"sports\"},\n",
+        "        {\"category\": \"tech\"}\n",
+        "    ],\n",
+        "    ids=[\"doc1\", \"doc2\", \"doc3\", \"doc4\", \"doc5\"]\n",
+        ")\n",
+        "\n",
+        "print(\"Documents added! Total count:\", collection.count())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "fzCMJF827-ni",
+        "outputId": "efeaf778-d3af-40da-c83d-b1503f55a2e1"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx.tar.gz: 100%|██████████| 79.3M/79.3M [00:01<00:00, 80.2MiB/s]\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Documents added! Total count: 5\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "preview = collection.peek(limit=3)\n",
+        "\n",
+        "for doc_id, doc in zip(preview[\"ids\"], preview[\"documents\"]):\n",
+        "    print(doc_id, \"->\", doc)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "2Z2Bcywo8DP1",
+        "outputId": "0b3e6a3a-243a-4d3d-e59f-802dcc33acec"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "doc1 -> Python is a popular programming language for AI.\n",
+            "doc2 -> The weather today is sunny and warm.\n",
+            "doc3 -> Machine learning models learn patterns from data.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "result = collection.get(ids=[\"doc1\", \"doc3\"])\n",
+        "\n",
+        "for doc_id, doc, meta in zip(result[\"ids\"], result[\"documents\"], result[\"metadatas\"]):\n",
+        "    print(f\"{doc_id} | {meta} | {doc}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "uCBzH0Ig8GuB",
+        "outputId": "938447dc-ad90-4b79-8f2a-f2fb77d69f47"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "doc1 | {'category': 'tech'} | Python is a popular programming language for AI.\n",
+            "doc3 | {'category': 'tech'} | Machine learning models learn patterns from data.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "results = collection.query(\n",
+        "    query_texts=[\"Tell me about AI and neural networks\"],\n",
+        "    n_results=2\n",
+        ")\n",
+        "\n",
+        "for doc_id, doc, distance in zip(results[\"ids\"][0], results[\"documents\"][0], results[\"distances\"][0]):\n",
+        "    print(f\"{doc_id} | distance={distance:.4f} | {doc}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0qur2rYX8JrS",
+        "outputId": "4fe30125-a760-48d8-b33c-e5eee6931026"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "doc5 | distance=0.9317 | Deep learning uses neural networks with many layers.\n",
+            "doc1 | distance=0.9516 | Python is a popular programming language for AI.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "results = collection.query(\n",
+        "    query_texts=[\"something fun to do outside\"],\n",
+        "    n_results=3,\n",
+        "    where={\"category\": \"sports\"}\n",
+        ")\n",
+        "\n",
+        "for doc_id, doc, distance in zip(results[\"ids\"][0], results[\"documents\"][0], results[\"distances\"][0]):\n",
+        "    print(f\"{doc_id} | distance={distance:.4f} | {doc}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "LIeWnFSi8M9X",
+        "outputId": "5f635d59-045c-4e36-bd37-aeab9928a3fb"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "doc4 | distance=1.3895 | I enjoy playing football on weekends.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "collection.update(\n",
+        "    ids=[\"doc4\"],\n",
+        "    documents=[\"I enjoy playing football and basketball on weekends.\"],\n",
+        "    metadatas=[{\"category\": \"sports\", \"updated\": True}]\n",
+        ")\n",
+        "\n",
+        "updated = collection.get(ids=[\"doc4\"])\n",
+        "print(updated[\"documents\"])\n",
+        "print(updated[\"metadatas\"])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "h8Cy-oVC8Ply",
+        "outputId": "930cb90d-5f3b-4643-c48a-ede847a6dca0"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "['I enjoy playing football and basketball on weekends.']\n",
+            "[{'category': 'sports', 'updated': True}]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "collection.upsert(\n",
+        "    documents=[\n",
+        "        \"Deep learning uses neural networks with many layers and GPUs.\",  # existing id -> will update\n",
+        "        \"The Eiffel Tower is located in Paris.\"                           # new id -> will create\n",
+        "    ],\n",
+        "    ids=[\"doc5\", \"doc6\"]\n",
+        ")\n",
+        "\n",
+        "print(\"Total count after upsert:\", collection.count())\n",
+        "print(collection.get(ids=[\"doc5\", \"doc6\"])[\"documents\"])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_9mNE-cC8Sa1",
+        "outputId": "6996e6cb-7fad-4bbd-97f9-707960ce6f9d"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Total count after upsert: 6\n",
+            "['Deep learning uses neural networks with many layers and GPUs.', 'The Eiffel Tower is located in Paris.']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "collection.delete(ids=[\"doc2\"])\n",
+        "\n",
+        "print(\"Total count after delete:\", collection.count())\n",
+        "print(\"Remaining ids:\", collection.get()[\"ids\"])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "b4gV02hz8UxQ",
+        "outputId": "3894ec8e-c0e2-4c70-b18e-284bf5c2a95d"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Total count after delete: 5\n",
+            "Remaining ids: ['doc1', 'doc3', 'doc4', 'doc5', 'doc6']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "collection.delete(where={\"category\": \"tech\"})\n",
+        "\n",
+        "print(\"Total count after category delete:\", collection.count())\n",
+        "print(\"Remaining ids:\", collection.get()[\"ids\"])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gmkX9tPt8X34",
+        "outputId": "f97e2798-6af6-4eea-d97c-c660ac9922ac"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Total count after category delete: 2\n",
+            "Remaining ids: ['doc4', 'doc6']\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "final_state = collection.get()\n",
+        "\n",
+        "print(\"Final document count:\", collection.count())\n",
+        "for doc_id, doc, meta in zip(final_state[\"ids\"], final_state[\"documents\"], final_state[\"metadatas\"]):\n",
+        "    print(f\"{doc_id} | {meta} | {doc}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8ohfk7C68Z5J",
+        "outputId": "6a9afbc3-db70-4816-acde-6e80e1a634c1"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Final document count: 2\n",
+            "doc4 | {'category': 'sports', 'updated': True} | I enjoy playing football and basketball on weekends.\n",
+            "doc6 | None | The Eiffel Tower is located in Paris.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}

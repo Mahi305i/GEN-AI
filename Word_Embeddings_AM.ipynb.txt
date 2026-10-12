@@ -1,0 +1,211 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Word_Embeddings"
+      ],
+      "metadata": {
+        "id": "y6EYRUdX1vn9"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "id": "7kKRr51H0g5I"
+      },
+      "outputs": [],
+      "source": [
+        "from sklearn.preprocessing import OneHotEncoder"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "words = [['cat'],['dog'],['apple'],['car']]"
+      ],
+      "metadata": {
+        "id": "CoT3kvML1AVC"
+      },
+      "execution_count": 2,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "encoder = OneHotEncoder(sparse_output=False)\n",
+        "result = encoder.fit_transform(words)"
+      ],
+      "metadata": {
+        "id": "FmhZLFus1DMP"
+      },
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(\"words :\",encoder.categories_[0])\n",
+        "print(\"Embeddings:\")\n",
+        "print(result)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 0
+        },
+        "id": "967S1Qs_1FUg",
+        "outputId": "57f0e09c-5f21-43ca-b93a-1c974f2862bf"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "words : ['apple' 'car' 'cat' 'dog']\n",
+            "Embeddings:\n",
+            "[[0. 0. 1. 0.]\n",
+            " [0. 0. 0. 1.]\n",
+            " [1. 0. 0. 0.]\n",
+            " [0. 1. 0. 0.]]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install gensim"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 0
+        },
+        "id": "0MlsBmC51Jsf",
+        "outputId": "4158653f-1894-405c-bead-ce01d37da1ba"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collecting gensim\n",
+            "  Downloading gensim-4.4.0-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (8.4 kB)\n",
+            "Requirement already satisfied: numpy>=1.18.5 in /usr/local/lib/python3.13/dist-packages (from gensim) (2.1.3)\n",
+            "Requirement already satisfied: scipy>=1.7.0 in /usr/local/lib/python3.13/dist-packages (from gensim) (1.16.3)\n",
+            "Requirement already satisfied: smart_open>=1.8.1 in /usr/local/lib/python3.13/dist-packages (from gensim) (8.0.1)\n",
+            "Requirement already satisfied: wrapt in /usr/local/lib/python3.13/dist-packages (from smart_open>=1.8.1->gensim) (2.4.1)\n",
+            "Downloading gensim-4.4.0-cp313-cp313-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (27.8 MB)\n",
+            "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m27.8/27.8 MB\u001b[0m \u001b[31m61.0 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hInstalling collected packages: gensim\n",
+            "Successfully installed gensim-4.4.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from gensim.models import Word2Vec"
+      ],
+      "metadata": {
+        "id": "nFYrVOx01MFh"
+      },
+      "execution_count": 6,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sentences = [[\"python\",\"is\",\"a\",\"language\"],\n",
+        " [\"java\",\"is\",\"a\",\"language\"],\n",
+        "  [\"python\",\"is\",\"easy\"],\n",
+        "   [\"java\",\"is\",\"easy\"],\n",
+        "    [\"python\",\"is\",\"powerful\"],\n",
+        "     [\"java\",\"is\",\"powerful\"]]"
+      ],
+      "metadata": {
+        "id": "WoKeOp3q1Rjj"
+      },
+      "execution_count": 7,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "model = Word2Vec(sentences,vector_size=10,window=2,min_count=1,workers=1)"
+      ],
+      "metadata": {
+        "id": "OJBmMGnV1Wny"
+      },
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(model.wv.most_similar('java',topn=3))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 0
+        },
+        "id": "MclhH71j1ZC8",
+        "outputId": "1d036469-aace-4b83-da0f-5061dd6d7d2f"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[('is', 0.5436059236526489), ('python', 0.3293713927268982), ('a', -0.17999078333377838)]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(model.wv.most_similar('python',topn=4))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 0
+        },
+        "id": "06Ov9H1w1cuF",
+        "outputId": "eb37eedc-7b32-44fc-9a96-926067799ca7"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[('java', 0.3293713331222534), ('is', 0.3004249036312103), ('a', -0.08937527984380722), ('powerful', -0.1055101677775383)]\n"
+          ]
+        }
+      ]
+    }
+  ]
+}

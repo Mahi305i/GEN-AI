@@ -1,0 +1,423 @@
+# 📚 Study Buddy – A RAG-Based AI Tutor for College Notes
+
+**Study Buddy** is an AI-powered learning assistant that helps college students understand, organize, and revise their study materials using Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG).
+
+Students can upload PDF notes, ask questions about their documents, generate summaries, and create quizzes to improve their learning experience.
+
+The application uses **Google Gemini API** to generate intelligent responses based on the content of uploaded study materials.
+
+---
+
+## 🚀 Key Features
+
+### 1. 🔐 User Authentication
+- Student registration and login.
+- JWT-based authentication.
+- Secure password hashing.
+- Individual user data protection.
+
+### 2. 📄 PDF Notes Management
+- Upload PDF study materials.
+- Extract text from PDF documents.
+- Split extracted text into smaller chunks.
+- Generate vector embeddings using Gemini.
+- Store embeddings in ChromaDB.
+- View and delete uploaded documents.
+- User-specific document access.
+
+### 3. 🤖 AI Tutor – RAG-Based Question Answering
+- Ask questions about uploaded college notes.
+- Retrieve relevant document chunks using vector similarity search.
+- Generate contextual answers using Gemini.
+- Display source documents used for answering.
+- Maintain conversation history.
+- Provide student-friendly explanations.
+
+### 4. 📝 Smart Summarizer
+- Generate structured summaries from uploaded PDFs.
+- Summarize large documents in batches.
+- Identify important topics and concepts.
+- Generate quick revision points.
+- Explain technical concepts in simple language.
+
+### 5. 🎯 AI Quiz Generator
+- Generate multiple-choice questions from uploaded notes.
+- Provide answer options.
+- Identify correct answers.
+- Generate explanations for questions.
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Technologies |
+|---|---|
+| Frontend | React.js, Vite |
+| Styling | Tailwind CSS |
+| Backend | Python, FastAPI |
+| Database | PostgreSQL |
+| Vector Database | ChromaDB |
+| AI Model | Google Gemini API |
+| Embeddings | Gemini Embedding Model |
+| PDF Processing | PyMuPDF |
+| Authentication | JWT |
+| ORM | SQLAlchemy |
+| API Testing | Swagger UI |
+| HTTP Client | Axios |
+
+---
+
+## 🏗️ System Architecture
+
+```text
+             STUDENT
+                |
+                v
+        REACT FRONTEND
+                |
+                v
+          FASTAPI BACKEND
+                |
+       +--------+---------+
+       |                  |
+       v                  v
+  AUTHENTICATION      PDF UPLOAD
+       |                  |
+       v                  v
+  POSTGRESQL          PyMuPDF
+                          |
+                          v
+                    TEXT EXTRACTION
+                          |
+                          v
+                    TEXT CHUNKING
+                          |
+                          v
+                  GEMINI EMBEDDINGS
+                          |
+                          v
+                      CHROMADB
+                          |
+             +------------+------------+
+             |            |            |
+             v            v            v
+          AI CHAT      SUMMARY       QUIZ
+             |            |            |
+             +------------+------------+
+                          |
+                          v
+                    GEMINI LLM
+                          |
+                          v
+                   AI RESPONSE
+                          |
+                          v
+                   REACT FRONTEND
+```
+
+---
+
+## 📂 Project Structure
+
+```text
+Study-Buddy/
+│
+├── backend/
+│   ├── app/
+│   │   ├── database/
+│   │   │   └── connection.py
+│   │   │
+│   │   ├── models/
+│   │   │   ├── user.py
+│   │   │   ├── conversation.py
+│   │   │   └── message.py
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── auth.py
+│   │   │   ├── notes.py
+│   │   │   ├── chat.py
+│   │   │   ├── study_tools.py
+│   │   │   └── quiz.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── document_service.py
+│   │   │   ├── rag_service.py
+│   │   │   ├── study_tools_service.py
+│   │   │   └── quiz_service.py
+│   │   │
+│   │   └── main.py
+│   │
+│   ├── chroma_db/
+│   ├── requirements.txt
+│   └── venv/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   │
+│   ├── package.json
+│   └── vite.config.js
+│
+├── .gitignore
+└── README.md
+```
+
+---
+
+## ⚙️ Installation and Setup
+
+### Prerequisites
+
+Install the following before running the project:
+
+- Python 3.10 or higher
+- Node.js and npm
+- PostgreSQL
+- Google Gemini API Key
+- Git
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/Study-Buddy.git
+
+cd Study-Buddy
+```
+
+### 2. Backend Setup
+
+Navigate to the backend directory:
+
+```bash
+cd backend
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment on Windows:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Environment Configuration
+
+Create a `.env` file in the project root or configure the environment variables according to your backend configuration.
+
+Example:
+
+```env
+DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/study_buddy
+
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+
+GEMINI_MODEL=gemini-2.5-flash
+
+GEMINI_FALLBACK_MODEL=gemini-2.5-flash-lite
+
+GEMINI_EMBEDDING_MODEL=gemini-embedding-2
+
+GEMINI_EMBEDDING_DIMENSIONS=768
+
+CHROMA_PERSIST_DIRECTORY=./chroma_db
+
+JWT_SECRET_KEY=YOUR_SECURE_SECRET_KEY
+```
+
+**Important:** Replace the placeholder values with your own credentials. Never upload your `.env` file or API keys to GitHub.
+
+### 4. Start the Backend Server
+
+From the backend directory:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Backend URL:
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### 5. Frontend Setup
+
+Open another terminal:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Frontend URL:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 🔌 API Endpoints
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/auth/register` | Register a student |
+| POST | `/api/auth/login` | Student login |
+| GET | `/api/auth/me` | Get logged-in user |
+
+### Notes Management
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/notes/upload` | Upload PDF notes |
+| GET | `/api/notes/` | List uploaded notes |
+| DELETE | `/api/notes/{note_id}` | Delete a document |
+
+### AI Chat
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/chat/ask` | Ask questions about notes |
+| GET | `/api/chat/history` | Get conversation history |
+| GET | `/api/chat/history/{conversation_id}` | Get a conversation |
+| DELETE | `/api/chat/history/{conversation_id}` | Delete a conversation |
+
+### Study Tools
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/study-tools/summarize` | Generate document summary |
+
+### Quiz Generator
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/quiz/generate` | Generate questions from notes |
+
+---
+
+## 🧠 How RAG Works in Study Buddy
+
+Retrieval-Augmented Generation combines document retrieval with AI-generated responses.
+
+The process involves:
+
+1. **Document Upload:** Students upload PDF study materials.
+2. **Text Extraction:** PyMuPDF extracts text from PDF documents.
+3. **Chunking:** Extracted text is divided into smaller overlapping chunks.
+4. **Embedding Generation:** Gemini converts text chunks into numerical vector representations.
+5. **Vector Storage:** ChromaDB stores embeddings and document metadata.
+6. **Question Processing:** The student submits a question.
+7. **Similarity Search:** Relevant chunks are retrieved from ChromaDB.
+8. **Context Generation:** Retrieved content is supplied to Gemini.
+9. **Answer Generation:** Gemini generates a contextual answer based on the retrieved material.
+
+This approach helps students receive answers grounded in their uploaded study materials.
+
+---
+
+## 🗄️ Database Design
+
+### PostgreSQL
+
+PostgreSQL stores structured application information.
+
+Main tables:
+
+- `users` – Student account information.
+- `conversations` – Chat conversation records.
+- `messages` – Individual chat messages.
+
+### ChromaDB
+
+ChromaDB stores:
+
+- Document text chunks.
+- Vector embeddings.
+- Note identifiers.
+- User identifiers.
+- Original filenames.
+- Chunk indexes.
+
+---
+
+## 🔒 Security Features
+
+- JWT-based authentication.
+- Password hashing.
+- User-specific document retrieval.
+- Protected API endpoints.
+- Environment-based API key management.
+- PDF file type and size validation.
+
+---
+
+## 🔮 Future Enhancements
+
+- Support for additional document formats such as DOCX and PPTX.
+- OCR support for scanned PDF documents.
+- Advanced semantic search and retrieval optimization.
+- Page-level citations for AI-generated answers.
+- Interactive quizzes with automatic score calculation.
+- Personalized learning recommendations.
+- Flashcard generation.
+- Study progress tracking and analytics.
+- Improved conversational memory.
+- Evaluation of RAG accuracy and response quality.
+- Research into model fine-tuning for domain-specific educational tasks.
+
+---
+
+## 🎯 Project Objective
+
+The main objective of Study Buddy is to make college learning easier, smarter, and more interactive by combining document understanding, Retrieval-Augmented Generation, and Large Language Models.
+
+It aims to reduce the time students spend searching through lengthy notes and provide a personalized AI-powered learning experience.
+
+---
+
+## 👨‍💻 Developer
+
+**Developed as an academic project**
+
+Project Name: Study Buddy – A RAG-Based AI Tutor for College Notes
+
+**Technologies:** React.js | FastAPI | Python | PostgreSQL | ChromaDB | Google Gemini API
+
+---
+
+## 📜 License
+
+This project is developed for educational and academic purposes. A license can be added when the repository is published.

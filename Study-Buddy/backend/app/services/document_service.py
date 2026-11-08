@@ -1,4 +1,4 @@
-import os
+﻿import os
 import uuid
 from pathlib import Path
 
@@ -14,7 +14,7 @@ from google.genai import types
 
 ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
 
-load_dotenv(dotenv_path=ENV_PATH, override=True)
+load_dotenv(dotenv_path=ENV_PATH, override=False)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 EMBEDDING_MODEL = os.getenv(
@@ -608,3 +608,4 @@ def delete_user_note(note_id: str, user_id: int) -> bool:
 
     print(f"Deleted note: {note_id}")
     return True
+

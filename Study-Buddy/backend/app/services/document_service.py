@@ -282,6 +282,23 @@ if VECTOR_DB == "qdrant":
 
     collection = QdrantCollectionAdapter(qdrant_client, models)
 
+    # Ensure payload indexes exist for filtering notes by user and note ID
+    collection_info = qdrant_client.get_collection(
+        collection_name=collection_name
+    )
+
+    existing_indexes = collection_info.payload_schema or {}
+
+    for field_name in ("user_id", "note_id"):
+        if field_name not in existing_indexes:
+            qdrant_client.create_payload_index(
+                collection_name=collection_name,
+                field_name=field_name,
+                field_schema=models.PayloadSchemaType.KEYWORD,
+                wait=True
+            )
+            print(f"Created Qdrant payload index: {field_name}")
+
 elif VECTOR_DB == "chroma":
     import chromadb
 

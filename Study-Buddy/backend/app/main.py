@@ -30,17 +30,17 @@ app = FastAPI(
 
 
 # CORS configuration
+# CORS configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-    "http://localhost:5173",
-    "https://gen-ai-nc4v.vercel.app"
-],
+        "http://localhost:5173",
+        "https://gen-ai-nc4y.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # Register API routes exactly once
 app.include_router(auth_router)
